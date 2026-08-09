@@ -84,8 +84,17 @@ python3 -m frappe_harness.cli stage-chat "$STATE"
 ```
 
 Type the current-stage proposal or discussion text, then use `/show`,
-`/reject`, `/approve [reason] [approver]`, or `/quit`. Free-form text is kept
+`/reject`, `/approve [reason] [approver]`, `/back STAGE [reason]`,
+`/lock STAGE`, or `/quit`. `/back` reopens an earlier stage and invalidates
+later approvals; `/lock` permanently prevents rollback across that completed
+stage. Free-form text is kept
 only as a digest; normalized stage state is what can resume between sessions.
+
+Routing is deliberately split from execution. The read-only orchestrator only
+reports the current stage and safe conversational route. Each stage has its
+own prompt and allow-list (`stage_orchestrator.py`); it cannot approve, call
+tools, or mutate a Bench. Python validation plus explicit human approval is
+required before any stage transition.
 
 ## Disposable Bench lifecycle
 

@@ -273,15 +273,22 @@ class StageFlow:
     approval record, and skipped or out-of-order stages are rejected.
     """
 
-    def __init__(self, records: tuple[StageRecord, ...] = ()) -> None:
+    def __init__(self, records: tuple[StageRecord, ...] = (), *, locked_stages: frozenset[Stage] = frozenset()) -> None:
         if not isinstance(records, tuple) or any(not isinstance(record, StageRecord) for record in records):
             raise StageFlowError("records must be an immutable tuple of StageRecord")
         _validate_stage_order(records)
+        if not isinstance(locked_stages, frozenset) or any(stage not in _STAGE_INDEX for stage in locked_stages):
+            raise StageFlowError("locked_stages must be an immutable set of stages")
         self._records = records
+        self._locked_stages = locked_stages
 
     @property
     def records(self) -> tuple[StageRecord, ...]:
         return self._records
+
+    @property
+    def locked_stages(self) -> frozenset[Stage]:
+        return self._locked_stages
 
     @property
     def current_stage(self) -> Stage:
@@ -331,7 +338,7 @@ class StageFlow:
             reason=approval.reason,
             approval=approval,
         )
-        return StageFlow(self._records + (record,))
+        return StageFlow(self._records + (record,), locked_stages=self._locked_stages)
 
     # CLI-compatible alias for the explicit approval transition.
     approve = transition
@@ -351,7 +358,30 @@ class StageFlow:
                 f"rejection targets {stage.value} but current stage is {self.current_stage.value}"
             )
         record = build_stage_record(stage=stage, status=StageStatus.REJECTED, reason=reason)
-        return StageFlow(self._records + (record,))
+        return StageFlow(self._records + (record,), locked_stages=self._locked_stages)
+
+    def lock(self, stage: Stage) -> StageFlow:
+        """Lock a stage against backward transitions; forward approval remains explicit."""
+        if not isinstance(stage, Stage) or stage not in self.completed_stages:
+            raise StageFlowError("only completed stages can be locked")
+        return StageFlow(self._records, locked_stages=self._locked_stages | {stage})
+
+    def back(self, target: Stage, reason: str) -> StageFlow:
+        """Return to an earlier stage and invalidate all later approvals."""
+        if not isinstance(target, Stage):
+            raise StageFlowError("back target must be a Stage")
+        if not self._records:
+            raise StageFlowError("cannot go back before the first stage")
+        current_index = len(self.completed_stages)
+        target_index = _STAGE_INDEX[target]
+        if target_index >= current_index:
+            raise StageFlowError("back target must be earlier than the current stage")
+        if any(_STAGE_INDEX[stage] >= target_index for stage in self._locked_stages):
+            raise StageFlowError("back target crosses a locked stage")
+        _text(reason, "reason", _MAX_REASON)
+        return StageFlow(self._records[:target_index], locked_stages=frozenset(
+            stage for stage in self._locked_stages if _STAGE_INDEX[stage] < target_index
+        ))
 
     def flow_digest(self) -> str:
         """Return a digest over the entire ordered record sequence."""
