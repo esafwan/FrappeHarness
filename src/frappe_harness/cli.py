@@ -99,6 +99,8 @@ def build_parser() -> argparse.ArgumentParser:
     stage.add_argument("--approve", choices=[s.value for s in Stage])
     stage.add_argument("--approver")
     stage.add_argument("--reason")
+    chat = commands.add_parser("stage-chat", help="interactive resumable human-in-loop stage session")
+    chat.add_argument("state", type=Path)
 
     demo = commands.add_parser("demo-run", help="exercise the complete local lifecycle with no Bench or network")
     _store_args(demo)
@@ -171,6 +173,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.state.write_text(json.dumps(flow.to_record(), sort_keys=True, indent=2) + "\n")
             _emit({"current": flow.current.value if flow.current else None, "complete": flow.complete, "flow_digest": flow.digest, "records": [r.__dict__ for r in flow.records]})
             return 0
+        if args.command == "stage-chat":
+            from .stage_chat import run_stage_chat
+            return run_stage_chat(args.state)
         store = RunStore(args.store)
         if args.command == "approve":
             run = store.get_run(args.run_id)

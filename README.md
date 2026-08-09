@@ -77,6 +77,16 @@ Inspect or replay the state by running the command without `--approve`:
 python3 -m frappe_harness.cli stage "$STATE"
 ```
 
+For a chat-like resumable terminal session, use the interactive MVP:
+
+```bash
+python3 -m frappe_harness.cli stage-chat "$STATE"
+```
+
+Type the current-stage proposal or discussion text, then use `/show`,
+`/reject`, `/approve [reason] [approver]`, or `/quit`. Free-form text is kept
+only as a digest; normalized stage state is what can resume between sessions.
+
 ## Disposable Bench lifecycle
 
 Only use the dedicated disposable target for mutation:
