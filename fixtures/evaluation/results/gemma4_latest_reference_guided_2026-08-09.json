@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "model": "gemma4:latest",
+  "prompt_mode": "reference_guided",
+  "status": "equivalent",
+  "equivalent": true,
+  "attempts": 1,
+  "seed": 0,
+  "release_eligible": false,
+  "raw_output_retained": false
+}

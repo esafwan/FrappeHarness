@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "6944e502-814d-4ea8-ae02-0100bfe14e93",
+  "target": {
+    "bench": "/workspace/development/frappe-harness-live-20260804",
+    "site": "frappe-harness-live-20260804.local",
+    "app": "task_tracker"
+  },
+  "provider": "frappe-native-rest",
+  "installed_spec_hash": "d069875f55943557c6929617c62726057e8ab5e8099d3754a87b134734669e5e",
+  "spec_hash": "98c5a9dffaf92cf15433912cf9b581f0fedaccf1505f4b6348fe52eae86b786e",
+  "plan_hash": "2d8ac202cc176a44144ce35529eb3c60e0040bdca5c501e44b6029ac77da8034",
+  "checks": {
+    "assessment": "run:6944e502-814d-4ea8-ae02-0100bfe14e93:evidence:23953022-ec2d-440b-aee9-7517ceba7aba",
+    "migration": "run:6944e502-814d-4ea8-ae02-0100bfe14e93:evidence:ece0de0f-4615-4063-9a43-f737a3b2e5cf",
+    "preservation": "run:6944e502-814d-4ea8-ae02-0100bfe14e93:evidence:dca3b6ea-d6e0-4c32-b650-59d5b0dda423",
+    "browser": "run:6944e502-814d-4ea8-ae02-0100bfe14e93:evidence:0fa0a6be-04f5-4f4c-900d-f6b7db75ff13",
+    "destructive_no_mutation": "run:6944e502-814d-4ea8-ae02-0100bfe14e93:evidence:e0de5b6e-ed6f-42de-a10c-1a512316c36d"
+  },
+  "mutation_attempted": false,
+  "raw_output_retained": false
+}

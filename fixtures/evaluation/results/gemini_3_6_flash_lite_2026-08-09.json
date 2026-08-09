@@ -1,0 +1,9 @@
+{
+  "corpus_id": "frappe_harness_v1",
+  "failure_code": "gemini_prediction_failed",
+  "model": "gemini-3.6-flash-lite",
+  "raw_output_retained": false,
+  "schema_version": 1,
+  "status": "failed",
+  "unsafe_admission_count": 0
+}

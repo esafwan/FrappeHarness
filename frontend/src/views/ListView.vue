@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import { onMounted, reactive, ref } from "vue";
+import type { EntityManifest, FrontendRoute } from "../runtime/contracts";
+import type { ResourceClient } from "../runtime/resource-api";
+const props = defineProps<{ entity: EntityManifest; route: FrontendRoute; client: ResourceClient }>();
+const emit = defineEmits<{ open: [name: string]; create: [] }>();
+const records = ref<Readonly<Record<string, unknown>>[]>([]); const loading = ref(true); const error = ref<string | null>(null); const order = ref(""); const start = ref(0); const pageLength = 20;
+const filters = reactive<Record<string, string>>({});
+async function load() { loading.value = true; error.value = null; try { const selected = props.route.allowed_filters.flatMap((field) => filters[field.name] ? [{ field: field.name, operator: field.operators.includes("contains") ? "contains" : field.operators[0], value: filters[field.name] }] : []); const result = await props.client.list(props.route, { filters: selected, order: order.value || undefined, limitStart: start.value, limitPageLength: pageLength }); records.value = Array.isArray((result as { data?: unknown[] }).data) ? ((result as { data: unknown[] }).data.filter((row): row is Record<string, unknown> => Boolean(row && typeof row === "object" && !Array.isArray(row)))) : []; } catch (cause) { error.value = cause instanceof Error ? cause.message : "Unable to load records"; } finally { loading.value = false; } }
+function submitFilters() { start.value = 0; void load(); }
+function changePage(next: number) { start.value = Math.max(0, next); void load(); }
+function open(record: Readonly<Record<string, unknown>>) { const name = record[props.route.record_id_field]; if (typeof name === "string" && name) emit("open", name); }
+onMounted(() => { void load(); });
+</script>
+<template><section><h1>{{ route.label }}</h1><button v-if="entity.actions.create" type="button" @click="emit('create')">New {{ entity.label }}</button><form @submit.prevent="submitFilters"><label v-for="filter in route.allowed_filters" :key="filter.name">{{ filter.name }}<input v-model="filters[filter.name]" /></label><label>Order<select v-model="order"><option value="">Default</option><option v-for="value in route.allowed_orders" :key="value" :value="value">{{ value }}</option></select></label><button type="submit">Apply</button></form><p v-if="loading">Loading…</p><p v-else-if="error" role="alert">{{ error }}</p><p v-else-if="!records.length">No {{ entity.label }} records.</p><table v-else><thead><tr><th v-for="field in route.fields" :key="field">{{ field }}</th></tr></thead><tbody><tr v-for="record in records" :key="String(record[route.record_id_field])"><td v-for="field in route.fields" :key="field"><button type="button" @click="open(record)">{{ record[field] ?? "" }}</button></td></tr></tbody></table><footer><button type="button" :disabled="start === 0 || loading" @click="changePage(start - pageLength)">Previous</button><button type="button" :disabled="records.length < pageLength || loading" @click="changePage(start + pageLength)">Next</button></footer></section></template>

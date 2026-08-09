@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "model": "gpt-oss:20b",
+  "corpus_id": "frappe_harness_v1",
+  "status": "escalated",
+  "equivalent": false,
+  "attempts": 1,
+  "failure_code": "repair_attempts_exhausted",
+  "unsafe_admission_count": 0,
+  "raw_output_retained": false
+}

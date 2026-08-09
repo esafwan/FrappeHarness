@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "target": {
+    "bench": "/workspace/development/frappe-harness-live-20260804",
+    "site": "frappe-harness-live-20260804.local",
+    "app": "task_tracker"
+  },
+  "registry_entry": {
+    "type": "disposable",
+    "status": "ready",
+    "purpose": "Independent FrappeHarness integration bench; latest HUF develop baseline only.",
+    "signed_by": "codex"
+  },
+  "production_designated": false,
+  "raw_output_retained": false
+}

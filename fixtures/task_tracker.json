@@ -1,0 +1,60 @@
+{
+  "name": "task_tracker",
+  "label": "Task Tracker",
+  "module": "task_tracker",
+  "version": 1,
+  "description": "Track projects and tasks with controlled CRUD permissions.",
+  "roles": [
+    {"name": "Task User", "description": "Can manage assigned work without deletion."},
+    {"name": "Task Manager", "description": "Can manage and delete all records."}
+  ],
+  "entities": [
+    {
+      "name": "project",
+      "label": "Project",
+      "title_field": "title",
+      "default_sort_field": "title",
+      "default_sort_order": "asc",
+      "search_fields": ["title"],
+      "list_columns": ["title"],
+      "standard_filters": ["active"],
+      "fields": [
+        {"name": "title", "label": "Title", "field_type": "Data", "required": true, "in_list_view": true, "position": 0},
+        {"name": "description", "label": "Description", "field_type": "Small Text", "position": 1},
+        {"name": "active", "label": "Active", "field_type": "Check", "default": true, "in_standard_filter": true, "position": 2}
+      ],
+      "permissions": [
+        {"role": "Task User", "read": true},
+        {"role": "Task Manager", "read": true, "create": true, "write": true, "delete": true}
+      ]
+    },
+    {
+      "name": "task",
+      "label": "Task",
+      "title_field": "title",
+      "default_sort_field": "due_date",
+      "default_sort_order": "asc",
+      "search_fields": ["title"],
+      "list_columns": ["title", "project", "status", "priority", "due_date"],
+      "standard_filters": ["project", "status", "priority"],
+      "fields": [
+        {"name": "title", "label": "Subject", "field_type": "Data", "required": true, "in_list_view": true, "position": 0},
+        {"name": "description", "label": "Description", "field_type": "Text Editor", "position": 1},
+        {"name": "project", "label": "Project", "field_type": "Link", "required": true, "options": ["project"], "in_list_view": true, "in_standard_filter": true, "position": 2},
+        {"name": "status", "label": "Status", "field_type": "Select", "required": true, "default": "Open", "options": ["Open", "In Progress", "Completed"], "in_list_view": true, "in_standard_filter": true, "position": 3},
+        {"name": "priority", "label": "Priority", "field_type": "Select", "required": true, "default": "Medium", "options": ["Low", "Medium", "High"], "in_list_view": true, "in_standard_filter": true, "position": 4},
+        {"name": "due_date", "label": "Due Date", "field_type": "Date", "in_list_view": true, "position": 5}
+      ],
+      "permissions": [
+        {"role": "Task User", "read": true, "create": true, "write": true},
+        {"role": "Task Manager", "read": true, "create": true, "write": true, "delete": true}
+      ]
+    }
+  ],
+  "screens": [
+    {"name": "project_list", "entity": "project", "kind": "list", "label": "Projects", "fields": ["title", "active"]},
+    {"name": "project_form", "entity": "project", "kind": "form", "label": "Project", "fields": ["title", "description", "active"]},
+    {"name": "task_list", "entity": "task", "kind": "list", "label": "Tasks", "fields": ["title", "project", "status", "priority", "due_date"]},
+    {"name": "task_form", "entity": "task", "kind": "form", "label": "Task", "fields": ["title", "description", "project", "status", "priority", "due_date"]}
+  ]
+}

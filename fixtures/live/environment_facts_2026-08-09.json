@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "target": {
+    "bench": "/workspace/development/frappe-harness-live-20260804",
+    "site": "frappe-harness-live-20260804.local",
+    "app": "task_tracker"
+  },
+  "facts_scope": ["frappe_version", "installed_apps", "developer_mode", "database_type"],
+  "frappe": {"major": 16, "version": "16.29.0"},
+  "installed_apps": ["frappe", "huf", "task_tracker"],
+  "developer_mode": true,
+  "database_type": "mariadb",
+  "production_designated": null,
+  "raw_output_retained": false,
+  "unsupported_remaining": [
+    "production_designated",
+    "database_health",
+    "disk",
+    "tooling"
+  ]
+}

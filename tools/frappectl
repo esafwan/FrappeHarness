@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+"""Minimal fixed read-only frappectl compatibility shim for disposable tests."""
+import json, os, sys, urllib.parse, urllib.request, http.cookiejar
+
+argv = sys.argv[1:]
+if len(argv) < 4 or argv[0] != "--json":
+    raise SystemExit(2)
+site = None
+if "--site" in argv:
+    i = argv.index("--site")
+    site = argv[i + 1]
+if "doctype" not in argv or "show" not in argv:
+    raise SystemExit(2)
+name = argv[argv.index("show") + 1]
+if not name or any(c in name for c in "\r\n/"):
+    raise SystemExit(2)
+base = os.environ.get("FRAPPE_HARNESS_FRAPPE_URL", "http://127.0.0.1:8000").rstrip("/")
+password = os.environ.get("FRAPPE_HARNESS_LIVE_ADMIN_PASSWORD")
+if not site or not password:
+    raise SystemExit(3)
+jar = http.cookiejar.CookieJar()
+opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+login = urllib.request.Request(base + "/api/method/login", data=urllib.parse.urlencode({"usr": "Administrator", "pwd": password}).encode(), headers={"Host": site})
+with opener.open(login, timeout=20):
+    pass
+req = urllib.request.Request(base + "/api/v2/doctype/" + urllib.parse.quote(name, safe="") + "/meta", headers={"Host": site, "Accept": "application/json"})
+with opener.open(req, timeout=20) as response:
+    payload = json.loads(response.read(1_000_000).decode())
+data = payload.get("data", payload)
+if not isinstance(data, dict) or data.get("name") != name:
+    raise SystemExit(4)
+print(json.dumps(data, sort_keys=True, separators=(",", ":")))

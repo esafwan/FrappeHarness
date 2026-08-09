@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "model": "models/gemini-3.5-flash-lite",
+  "corpus_id": "frappe_harness_v1",
+  "status": "escalated",
+  "equivalent": false,
+  "attempts": 2,
+  "failure_code": "repair_attempts_exhausted",
+  "issue_codes": ["expected_array"],
+  "unsafe_admission_count": 0,
+  "raw_output_retained": false
+}

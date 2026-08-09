@@ -1,0 +1,44 @@
+{
+  "name": "@frappe-harness/frappe-harness-pi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional typed JSON-only Pi operator adapter for Frappe Harness",
+  "piHostVersion": "0.82.1",
+  "type": "module",
+  "pi": {
+    "extensions": ["dist/index.js"]
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "SKILL.md",
+    "COMPATIBILITY.md",
+    "PI_HOST_SMOKE.md"
+  ],
+  "engines": {
+    "node": ">=20 <23"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc --noEmit",
+    "host-smoke": "node scripts/pi-host-smoke.mjs",
+    "contract-smoke": "node scripts/contract-smoke.mjs",
+    "headless-equivalence-smoke": "node scripts/headless-equivalence-smoke.mjs",
+    "pi-lifecycle-smoke": "npm run build && node scripts/pi-lifecycle-smoke.mjs",
+    "packed-distribution-smoke": "npm run build && node scripts/packed-distribution-smoke.mjs",
+    "compatibility-gate": "node scripts/compatibility-gate.mjs",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}

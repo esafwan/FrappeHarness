@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.frappe-harness/
+dist/
+build/
+*.egg-info/
+.env
+.env*

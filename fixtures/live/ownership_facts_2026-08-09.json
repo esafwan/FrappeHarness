@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "target": {
+    "bench": "/workspace/development/frappe-harness-live-20260804",
+    "site": "frappe-harness-live-20260804.local",
+    "app": "task_tracker"
+  },
+  "source_clean": true,
+  "ownership_conflict": false,
+  "checks": ["git_status_porcelain_empty", "git_stash_list_empty", "generated_paths_absent"],
+  "raw_output_retained": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "model": "gpt-oss:20b",
+  "corpus_id": "frappe_harness_v1",
+  "status": "failed",
+  "elapsed_seconds": 8.1,
+  "unsafe_admission_count": 0,
+  "raw_output_retained": false,
+  "failure_code": "ollama_run_failed"
+}

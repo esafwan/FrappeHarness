@@ -1,0 +1,40 @@
+{
+  "provider": "frappe_commander",
+  "upstream_repository": "https://github.com/esafwan/frappe_commander.git",
+  "upstream_commit": "473b091ccbe1d9c908fc0a703afd3b67aa294538",
+  "target_framework": "Frappe 16.29.0",
+  "target_bench": "frappe-harness-live-20260804",
+  "target_site": "frappe-harness-live-20260804.local",
+  "installation": "bench get-app followed by bench install-app on disposable target",
+  "installed_apps": ["frappe", "huf", "task_tracker", "commander"],
+  "probe_doctypes": [
+    {
+      "name": "Commander Probe Project",
+      "module": "task_tracker",
+      "fields": [
+        {"fieldname": "project_code", "fieldtype": "Data", "reqd": true, "unique": true},
+        {"fieldname": "status", "fieldtype": "Select", "options": "Open\\nClosed", "default": "Open"}
+      ],
+      "metadata_sha256": "cc023dabcc3667b437fc617ebde17364abb05286cb6238a811b99c564cbb5c88"
+    },
+    {
+      "name": "Commander Probe Task",
+      "module": "task_tracker",
+      "fields": [
+        {"fieldname": "subject", "fieldtype": "Data", "reqd": true},
+        {"fieldname": "project", "fieldtype": "Link", "options": "Commander Probe Project"},
+        {"fieldname": "active", "fieldtype": "Check", "default": "1"}
+      ],
+      "metadata_sha256": "f89d3aa6569edda031185123523f858d4b86947ea8fddad2ccd2e78899c6eef4"
+    }
+  ],
+  "failure_probe": {
+    "unsupported_field_type": "UnsupportedType",
+    "exit_code": 1,
+    "accepted": false
+  },
+  "limitations": [
+    "Commander emits app source JSON and does not supply the harness role matrix or lifecycle authority.",
+    "Golden Task Tracker permission/REST equivalence and full typed executor binding remain unapproved."
+  ]
+}

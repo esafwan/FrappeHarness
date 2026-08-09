@@ -1,0 +1,13 @@
+{
+  "node_runtime": "22.23.2",
+  "pi_version": "0.82.1",
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "isolated_probe_passed": true,
+  "tools_disabled": true,
+  "extensions_disabled": true,
+  "skills_disabled": true,
+  "session_persistence_disabled": true,
+  "raw_output_retained": false,
+  "evidence_sha256": "38f0f0efe6158f3b5f6557156b23f710dd6ede78b619c6becb80d5eecf265f21"
+}

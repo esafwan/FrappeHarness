@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "run_id": "a5aad7e0-722b-4d30-998e-98a9cd117ad4",
+  "target": {
+    "bench": "/workspace/development/frappe-harness-live-20260804",
+    "site": "frappe-harness-live-20260804.local",
+    "app": "task_tracker"
+  },
+  "provider": "frappe-native",
+  "interrupted_before_reconciliation": true,
+  "replay_refused_before_reconciliation": true,
+  "inspection": {
+    "operation": "inspect_meta",
+    "status": 200,
+    "outcome": "inspected",
+    "plan_driven": true,
+    "v2_spec_hash": "98c5a9dffaf92cf15433912cf9b581f0fedaccf1505f4b6348fe52eae86b786e",
+    "v2_plan_hash": "2d8ac202cc176a44144ce35529eb3c60e0040bdca5c501e44b6029ac77da8034",
+    "raw_output_retained": false
+  },
+  "after_reconciliation_state": "pending",
+  "evidence_kind": "migration_reconciliation"
+}
